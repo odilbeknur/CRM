@@ -1,0 +1,12 @@
+<!-- Template for ticket_form.html -->
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>{% if ticket %}Редактировать заявку{% else %}Создать заявку{% endif %}</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">{% if ticket %}Сохранить изменения{% else %}Создать заявку{% endif %}</button>
+  </form>
+  <a href="{% url 'tickets:ticket_list' %}" class="btn btn-secondary">Отмена</a>
+{% endblock %}

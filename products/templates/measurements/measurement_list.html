@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Список замеров</h2>
+  <a href="{% url 'products:measurement_create' %}" class="btn btn-success">Добавить замер</a>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Заявка</th>
+        <th>Продукция</th>
+        <th>Размеры</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for measurement in measurements %}
+        <tr>
+          <td>{{ measurement.id }}</td>
+          <td>{{ measurement.ticket }}</td>
+          <td>{{ measurement.product }}</td>
+          <td>{{ measurement.height }} x {{ measurement.width }}</td>
+          <td>
+            <a href="{% url 'measurement_edit' measurement.id %}" class="btn btn-primary btn-sm">Редактировать</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

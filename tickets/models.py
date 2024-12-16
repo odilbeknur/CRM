@@ -1,5 +1,6 @@
 from django.db import models
-from users.models import Employee, Client
+from users.models import Employee, Client, Person
+
 
 
 # Основная модель Заявки
@@ -43,7 +44,7 @@ class Ticket(models.Model):
 # Этапы (справочник)
 class Stage(models.Model):
     name = models.CharField(max_length=100, verbose_name="Название этапа")
-    priority = models.PositiveIntegerField(verbose_name="Приоритет этапа")
+    priority = models.PositiveIntegerField(verbose_name="Приоритет этапа", null=True, blank=True,)
 
     class Meta:
         verbose_name = "Этап"

@@ -1,5 +1,6 @@
 from django.db import models
 from tickets.models import Ticket
+from django.urls import reverse
 
 
 # Product Model
@@ -41,6 +42,11 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.type})"
+    
+    def get_absolute_url(self):
+        return reverse('products:detail', args=[self.id])
+    def edit_absolute_url(self):
+        return reverse('products:edit', args=[self.id])
 
 
 # Measurement Model
@@ -66,3 +72,6 @@ class Measurement(models.Model):
 
     def __str__(self):
         return f"Замер для заявки {self.ticket.id}"
+    
+    def get_absolute_url(self):
+        return reverse('products:measurement_edit', args=[self.id]) 
