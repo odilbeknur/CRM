@@ -1,0 +1,30 @@
+
+{% extends "base.html" %}
+
+{% block main %}
+<div class="content kanban-deals-content">
+
+  <h2>Список клиентов</h2>
+  <a href="{% url 'tickets:ticket_create' %}" class="btn btn-success">Добавить клиента</a>
+  <table class="table">
+    <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Телефон</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for employee in employees %}
+        <tr>
+            <td>{{ employee.person.first_name }}</td>
+            <td>{{ employee.person.last_name }}</td>
+            <td>{{ employee.role }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+  </div>
+{% endblock %}
+
+    

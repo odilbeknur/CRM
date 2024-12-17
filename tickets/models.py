@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from users.models import Employee, Client, Person
 
 
@@ -63,11 +64,12 @@ class StageHistory(models.Model):
     stage = models.ForeignKey(
         Stage, on_delete=models.CASCADE, related_name="stage_histories", verbose_name="Этап"
     )
+    started_at = models.DateTimeField(null=True, blank=True, verbose_name="Дата начала этапа")
+    completed_at = models.DateTimeField(null=True, blank=True, verbose_name="Дата завершения")
     performed_by = models.ForeignKey(
-        Employee, on_delete=models.SET_NULL, null=True, related_name="performed_stages",
+        Employee, on_delete=models.SET_NULL, null=True, related_name="stage_histories",
         verbose_name="Ответственный сотрудник"
     )
-    completed_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата завершения")
 
     class Meta:
         verbose_name = "История этапов"
@@ -77,4 +79,23 @@ class StageHistory(models.Model):
         ]
 
     def __str__(self):
-        return f"Этап '{self.stage}' для заявки {self.ticket.id}"
+        return f"Этап '{self.stage}' для заявки {self.ticket.id} (Начат: {self.started_at}, Завершен: {self.completed_at})"
+    # def save(self, *args, **kwargs):
+    #     # Проверка начала этапа
+    #     if not self.started_at:
+    #         self.started_at = timezone.now()
+
+    #     # Проверка завершения этапа
+    #     if self.completed_at and self.completed_at <= self.started_at:
+    #         raise ValueError("Дата завершения должна быть позже даты начала этапа")
+
+    #     # Проверка перехода на следующий этап (порядок этапов)
+    #     if self.pk:  # Если это не новый объект
+    #         last_stage_history = StageHistory.objects.filter(
+    #             ticket=self.ticket
+    #         ).exclude(pk=self.pk).order_by('-completed_at').first()
+            
+    #         if last_stage_history and last_stage_history.stage.priority >= self.stage.priority:
+    #             raise ValueError("Этап не может быть завершен до перехода на следующий этап.")
+
+    #     super().save(*args, **kwargs)

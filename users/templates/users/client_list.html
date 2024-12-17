@@ -1,5 +1,12 @@
-<h1>Список клиентов</h1>
-<table class="table">
+
+{% extends "base.html" %}
+
+{% block main %}
+<div class="content kanban-deals-content">
+
+  <h2>Список клиентов</h2>
+  <a href="{% url 'tickets:ticket_create' %}" class="btn btn-success">Добавить клиента</a>
+  <table class="table">
     <thead>
         <tr>
             <th>Имя</th>
@@ -9,12 +16,15 @@
     </thead>
     <tbody>
         {% for client in clients %}
-            <tr>
-                <td>{{ client.person.first_name }}</td>
-                <td>{{ client.person.last_name }}</td>
-                <td>{{ client.person.phone_number_1 }}</td>
-            </tr>
+        <tr>
+            <td>{{ client.person.first_name }}</td>
+            <td>{{ client.person.last_name }}</td>
+            <td>{{ client.person.phone_number_1 }}</td>
+        </tr>
         {% endfor %}
     </tbody>
-</table>
+  </table>
+  </div>
+{% endblock %}
+
     

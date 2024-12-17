@@ -2,8 +2,9 @@
 
 {% block title %}Список продукции{% endblock %}
 
-{% block content %}
-<div class="container">
+{% block main %}
+<div class="content kanban-deals-content">
+
     <h1 class="mb-4">Список продукции</h1>
     <a href="{% url 'products:create' %}" class="btn btn-primary mb-3">Добавить продукцию</a>
     <table class="table table-striped">

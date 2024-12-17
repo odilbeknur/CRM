@@ -5,7 +5,7 @@ from django.shortcuts import render
 from .forms import (
     LoginForm,
 )
-from .models import Client
+from .models import Client, Employee
 
 
 # Create your views here.
@@ -33,4 +33,8 @@ def user_login(request):
 
 def list_clients(request):
     clients = Client.objects.all()  # Get all clients
-    return render(request, 'clients/client_list.html', {'clients': clients})
+    return render(request, 'users/client_list.html', {'clients': clients})
+
+def list_employee(request):
+    employees = Employee.objects.all()  # Get all clients
+    return render(request, 'users/employees_list.html', {'employees': employees})

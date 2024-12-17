@@ -14,14 +14,12 @@ class TicketAdmin(admin.ModelAdmin):
 @admin.register(Stage)
 class StageAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "priority")
-    ordering = ("priority",)
-    search_fields = ("name",)
+    search_fields = ("name", "priority")
 
 
 @admin.register(StageHistory)
 class StageHistoryAdmin(admin.ModelAdmin):
-    list_display = ("id", "ticket", "stage", "performed_by", "completed_at")
+    list_display = ("id", "ticket", "stage","performed_by", "completed_at")
     list_filter = ("completed_at", "stage")
-    search_fields = ("ticket__id", "stage__name", "performed_by__person__first_name", "performed_by__person__last_name")
-    autocomplete_fields = ("ticket", "stage", "performed_by")
-    ordering = ("-completed_at",)
+    search_fields = ("ticket__id", "stage__name","performed_by__person__first_name", "performed_by__person__last_name")
+    autocomplete_fields = ("ticket", "stage")

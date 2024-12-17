@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block main %}
+<div class="content kanban-deals-content">
   <h2>Подтвердите удаление заявки</h2>
   <p>Вы уверены, что хотите удалить заявку <strong>{{ object.id }}</strong> для клиента "{{ object.client }}"?</p>
   <form method="post">
@@ -10,4 +11,5 @@
       <a href="{% url 'tickets:ticket_list' %}" class="btn btn-secondary">Отмена</a>
     {% endif %}
   </form>
+</div>
 {% endblock %}

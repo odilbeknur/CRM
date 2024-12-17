@@ -1,0 +1,201 @@
+{% load static %}
+
+<nav class="navbar navbar-top fixed-top navbar-expand-lg" id="navbarTop" style="display:none;">
+    <div class="navbar-logo">
+        <button class="btn navbar-toggler navbar-toggler-humburger-icon hover-bg-transparent" type="button"
+            data-bs-toggle="collapse" data-bs-target="#navbarTopCollapse" aria-controls="navbarTopCollapse"
+            aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span
+                    class="toggle-line"></span></span></button>
+        <a class="navbar-brand me-1 me-sm-3" href="">
+            <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center"><img src="{% static 'assets/img/icons/logo.png' %}" alt="phoenix"
+                        width="27" />
+                    <h5 class="logo-text ms-2 d-none d-sm-block">CRM</h5>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="collapse navbar-collapse navbar-top-collapse order-1 order-lg-0 justify-content-center"
+        id="navbarTopCollapse">
+        <ul class="navbar-nav navbar-nav-top" data-dropdown-on-hover="data-dropdown-on-hover">
+            <li class="nav-item dropdown"><a class="nav-link lh-1" href="{% url 'tickets:ticket_list' %}" role="button">
+                <span class="uil fs-8 me-2 uil-chart-pie"></span>Заявки</a>
+            </li>
+            <li class="nav-item dropdown"><a class="nav-link lh-1" href="{% url 'tickets:index_view' %}" role="button">
+                <span class="uil fs-8 me-2 uil-chart-pie"></span>Статус заявок</a>
+            </li>
+            <li class="nav-item dropdown"><a class="nav-link lh-1" href="{% url 'products:list' %}" role="button">
+                <span class="uil fs-8 me-2 uil-cube"></span>Продукция</a>
+            </li>
+            <li class="nav-item dropdown"><a class="nav-link lh-1" href="{% url 'users:client_list' %}" role="button">
+                <span class="uil fs-8 me-2 uil-files-landscapes-alt"></span>Клиенты</a>
+            </li>
+            <li class="nav-item dropdown"><a class="nav-link lh-1" href="{% url 'users:list_employee' %}" role="button">
+                <span class="uil fs-8 me-2 uil-puzzle-piece"></span>Сотрудники</a>
+            </li>
+        </ul>
+    </div>
+    <ul class="navbar-nav navbar-nav-icons flex-row">
+        <li class="nav-item">
+            <div class="theme-control-toggle fa-icon-wait px-2"><input
+                    class="form-check-input ms-0 theme-control-toggle-input" type="checkbox"
+                    data-theme-control="phoenixTheme" value="dark" id="themeControlToggle" /><label
+                    class="mb-0 theme-control-toggle-label theme-control-toggle-light" for="themeControlToggle"
+                    data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Switch theme"
+                    style="height:32px;width:32px;"><span class="icon" data-feather="moon"></span></label><label
+                    class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle"
+                    data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Switch theme"
+                    style="height:32px;width:32px;"><span class="icon" data-feather="sun"></span></label></div>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link" href="#" style="min-width: 2.25rem" role="button" data-bs-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false" data-bs-auto-close="outside"><span class="d-block"
+                    style="height:20px;width:20px;"><span data-feather="bell"
+                        style="height:20px;width:20px;"></span></span></a>
+            <div class="dropdown-menu dropdown-menu-end notification-dropdown-menu py-0 shadow border navbar-dropdown-caret"
+                id="navbarDropdownNotfication" aria-labelledby="navbarDropdownNotfication">
+                <div class="card position-relative border-0">
+                    <div class="card-header p-2">
+                        <div class="d-flex justify-content-between">
+                            <h5 class="text-body-emphasis mb-0">Уведомления</h5><button
+                                class="btn btn-link p-0 fs-9 fw-normal" type="button">Пометить как прочитанное</button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="scrollbar-overlay" style="height: 27rem;">
+                            <div
+                                class="px-2 px-sm-3 py-3 notification-card position-relative read border-bottom">
+                                <div
+                                    class="d-flex align-items-center justify-content-between position-relative">
+                                    <div class="d-flex">
+                                        <div class="avatar avatar-m status-online me-3"><img
+                                                class="rounded-circle" src="{% static 'assets/img/team/40x40/30.webp' %}"
+                                                alt="" /></div>
+                                        <div class="flex-1 me-sm-3">
+                                            <h4 class="fs-9 text-body-emphasis">Сотрудник</h4>
+                                            <p class="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal"><span
+                                                    class='me-1 fs-10'>💬</span>Замерщик внес изменения.<span
+                                                    class="ms-2 text-body-quaternary text-opacity-75 fw-bold fs-10">10m</span>
+                                            </p>
+                                            <p class="text-body-secondary fs-9 mb-0"><span
+                                                    class="me-1 fas fa-clock"></span><span class="fw-bold">10:41
+                                                    AM </span>Декабрь 31,2024</p>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown notification-dropdown"><button
+                                            class="btn fs-10 btn-sm dropdown-caret-none transition-none"
+                                            type="button" data-bs-toggle="dropdown" data-boundary="window"
+                                            aria-haspopup="true" aria-expanded="false"
+                                            data-bs-reference="parent"><span
+                                                class="fas fa-ellipsis-h fs-10 text-body"></span></button>
+                                        <div class="dropdown-menu py-2"><a class="dropdown-item" href="#!">Mark
+                                                as unread</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</nav>
+<script>
+    var navbarTopShape = 'default'; // Set to 'default'
+    var navbarPosition = 'horizontal'; // Set to 'horizontal'
+    var body = document.querySelector('body');
+    var navbarDefault = document.querySelector('#navbarDefault');
+    var navbarTop = document.querySelector('#navbarTop');
+    var topNavSlim = document.querySelector('#topNavSlim');
+    var navbarTopSlim = document.querySelector('#navbarTopSlim');
+    var navbarCombo = document.querySelector('#navbarCombo');
+    var navbarComboSlim = document.querySelector('#navbarComboSlim');
+    var dualNav = document.querySelector('#dualNav');
+
+    var documentElement = document.documentElement;
+    var navbarVertical = document.querySelector('.navbar-vertical');
+
+    if (navbarPosition === 'dual-nav') {
+        topNavSlim?.remove();
+        navbarTop?.remove();
+        navbarTopSlim?.remove();
+        navbarCombo?.remove();
+        navbarComboSlim?.remove();
+        navbarDefault?.remove();
+        navbarVertical?.remove();
+        dualNav.removeAttribute('style');
+        document.documentElement.setAttribute('data-navigation-type', 'dual');
+
+    } else if (navbarTopShape === 'slim' && navbarPosition === 'vertical') {
+        navbarDefault?.remove();
+        navbarTop?.remove();
+        navbarTopSlim?.remove();
+        navbarCombo?.remove();
+        navbarComboSlim?.remove();
+        topNavSlim.style.display = 'block';
+        navbarVertical.style.display = 'inline-block';
+        document.documentElement.setAttribute('data-navbar-horizontal-shape', 'slim');
+
+    } else if (navbarTopShape === 'slim' && navbarPosition === 'horizontal') {
+        navbarDefault?.remove();
+        navbarVertical?.remove();
+        navbarTop?.remove();
+        topNavSlim?.remove();
+        navbarCombo?.remove();
+        navbarComboSlim?.remove();
+        dualNav?.remove();
+        navbarTopSlim.removeAttribute('style');
+        document.documentElement.setAttribute('data-navbar-horizontal-shape', 'slim');
+    } else if (navbarTopShape === 'slim' && navbarPosition === 'combo') {
+        navbarDefault?.remove();
+        navbarTop?.remove();
+        topNavSlim?.remove();
+        navbarCombo?.remove();
+        navbarTopSlim?.remove();
+        dualNav?.remove();
+        navbarComboSlim.removeAttribute('style');
+        navbarVertical.removeAttribute('style');
+        document.documentElement.setAttribute('data-navbar-horizontal-shape', 'slim');
+    } else if (navbarTopShape === 'default' && navbarPosition === 'horizontal') {
+        navbarDefault?.remove();
+        topNavSlim?.remove();
+        navbarVertical?.remove();
+        navbarTopSlim?.remove();
+        navbarCombo?.remove();
+        navbarComboSlim?.remove();
+        dualNav?.remove();
+        navbarTop.removeAttribute('style');
+        document.documentElement.setAttribute('data-navigation-type', 'horizontal');
+    } else if (navbarTopShape === 'default' && navbarPosition === 'combo') {
+        topNavSlim?.remove();
+        navbarTop?.remove();
+        navbarTopSlim?.remove();
+        navbarDefault?.remove();
+        navbarComboSlim?.remove();
+        dualNav?.remove();
+        navbarCombo.removeAttribute('style');
+        navbarVertical.removeAttribute('style');
+        document.documentElement.setAttribute('data-navigation-type', 'combo');
+    } else {
+        topNavSlim?.remove();
+        navbarTop?.remove();
+        navbarTopSlim?.remove();
+        navbarCombo?.remove();
+        navbarComboSlim?.remove();
+        dualNav?.remove();
+        navbarDefault.removeAttribute('style');
+        navbarVertical.removeAttribute('style');
+    }
+
+    var navbarTopStyle = 'default'; // Set to 'default'
+    var navbarTop = document.querySelector('.navbar-top');
+    if (navbarTopStyle === 'darker') {
+        navbarTop.setAttribute('data-navbar-appearance', 'darker');
+    }
+
+    var navbarVerticalStyle = 'default'; // Set to 'default'
+    var navbarVertical = document.querySelector('.navbar-vertical');
+    if (navbarVerticalStyle === 'darker') {
+        navbarVertical.setAttribute('data-navbar-appearance', 'darker');
+    }
+</script>
