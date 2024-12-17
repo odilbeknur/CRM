@@ -2,16 +2,21 @@
 {% extends "base.html" %}
 
 {% block main %}
-<div class="content kanban-deals-content">
+<div class="content">
+  <div class="mb-9" data-bs-spy="scroll" data-bs-target="#widgets-scrollspy">
+    <div class="d-flex mb-5 pt-8" id="scrollspyStats"><span class="fa-stack me-2 ms-n1"><i class="fas fa-circle fa-stack-2x text-primary"></i><i class="fa-inverse fa-stack-1x text-primary-subtle"></i></span>
+      <div class="col">
+        <h3 class="mb-0 text-primary position-relative fw-bold"><span class="bg-body pe-2">Список сотрудников</span><span class="border border-primary position-absolute top-50 translate-middle-y w-100 start-0 z-n1"></span></h3>
+      </div>
+    </div>
 
-  <h2>Список клиентов</h2>
-  <a href="{% url 'tickets:ticket_create' %}" class="btn btn-success">Добавить клиента</a>
+  <a href="{% url 'users:create_employee' %}" class="btn btn-success">Добавить сотрудника</a>
   <table class="table">
     <thead>
         <tr>
             <th>Имя</th>
             <th>Фамилия</th>
-            <th>Телефон</th>
+            <th>Должность</th>
         </tr>
     </thead>
     <tbody>
@@ -24,6 +29,7 @@
         {% endfor %}
     </tbody>
   </table>
+  </div>
   </div>
 {% endblock %}
 

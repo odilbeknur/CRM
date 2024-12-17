@@ -1,8 +1,13 @@
 {% extends "base.html" %}
 
 {% block main %}
-<div class="content kanban-deals-content">
-  <h2>Подтвердите удаление заявки</h2>
+<div class="content">
+  <div class="mb-9" data-bs-spy="scroll" data-bs-target="#widgets-scrollspy">
+    <div class="d-flex mb-5 pt-8" id="scrollspyStats"><span class="fa-stack me-2 ms-n1"><i class="fas fa-circle fa-stack-2x text-primary"></i><i class="fa-inverse fa-stack-1x text-primary-subtle"></i></span>
+      <div class="col">
+        <h3 class="mb-0 text-primary position-relative fw-bold"><span class="bg-body pe-2">Подтвердите удаление заявки</span><span class="border border-primary position-absolute top-50 translate-middle-y w-100 start-0 z-n1"></span></h3>
+      </div>
+    </div>
   <p>Вы уверены, что хотите удалить заявку <strong>{{ object.id }}</strong> для клиента "{{ object.client }}"?</p>
   <form method="post">
     {% csrf_token %}
@@ -11,5 +16,6 @@
       <a href="{% url 'tickets:ticket_list' %}" class="btn btn-secondary">Отмена</a>
     {% endif %}
   </form>
+  </div>
 </div>
 {% endblock %}

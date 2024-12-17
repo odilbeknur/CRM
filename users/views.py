@@ -4,6 +4,7 @@ from django.shortcuts import render
 
 from .forms import (
     LoginForm,
+    EmployeeForm
 )
 from .models import Client, Employee
 
@@ -38,3 +39,13 @@ def list_clients(request):
 def list_employee(request):
     employees = Employee.objects.all()  # Get all clients
     return render(request, 'users/employees_list.html', {'employees': employees})
+
+def create_employee(request):
+    if request.method == 'POST':
+        form = EmployeeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('employee_list')  # Redirect to an employee list or another page
+    else:
+        form = EmployeeForm()
+    return render(request, 'users/employee_form.html', {'form': form})
