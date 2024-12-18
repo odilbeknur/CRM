@@ -1,5 +1,7 @@
 {% extends "base.html" %}
+{% load ticket_tags %}
 {% load static %}
+
 
 {% block main %}
 <div class="content">
@@ -16,54 +18,61 @@
         <th>ID</th>
         <th>Клиент</th>
         <th>Описание</th>
-        <th>Статус</th>
         <th>Дата</th>
-        <th>Обновлено</th>
-        <th>Редактировать</th>
+        <th>Источник рекламы</th>
         <th>Текущий этап</th>
-        <th>Действия</th>
+        <th>Сотрудник</th>
+        <th>Редактировать</th>
       </tr>
     </thead>
     <tbody>
       {% for ticket in tickets %}
-        <tr>
+        <tr style="vertical-align: middle;">
           <td>{{ ticket.id }}</td>
           <td>{{ ticket.client }}</td>
           <td>{{ ticket.description }}</td>
-          <td>
-            <form method="post" action="{% url 'tickets:ticket_update_status' ticket.id %}">
-              {% csrf_token %}
-              <select name="status" class="form-control form-control-sm" onchange="this.form.submit()">
-                {% for status, label in ticket.STATUS_CHOICES %}
-                  <option value="{{ status }}" {% if ticket.status == status %}selected{% endif %}>
-                    {{ label }}
-                  </option>
-                {% endfor %}
-              </select>
-            </form>
-          </td>
           <td>{{ ticket.created_at }}</td>
-          <td>{{ ticket.updated_at }}</td>
-          <td>
-            <form method="post" action="{% url 'tickets:ticket_update_stage' ticket.id %}">
-              {% csrf_token %}
-              <select name="stage" class="form-control form-control-sm" onchange="this.form.submit()">
-                <option value="#" selected disabled>Выберите этап</option>
-                {% for stage in stages %} 
-                  {% if stage.name != ticket.stage_history.last.stage.name and ticket.stage_history.last.stage.priority < stage.priority %} 
-                    <option value="{{ stage.id }}">
-                      {{ stage.name }}
-                    </option>
-                  {% endif %}
-                {% endfor %}
-              </select>
-            </form>
-          </td>
+          <td>{{ ticket.ads_info }}</td>
           <td>
             {% if ticket.stage_history.last %}
-              {{ ticket.stage_history.last.stage.name }}
+            <p>
+            
+              <button class="btn btn-phoenix-secondary ms-sm-2 mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ticket.id}}" aria-expanded="false" aria-controls="collapseExample">              {{ ticket.stage_history.last.stage.name }}
+              </button>
+            
+            </p>
+            <div class="collapse" id="collapse{{ticket.id}}">
+              <!-- <div class="border border-translucent p-3 rounded"> -->
+              <div class="">
+                <form method="post" action="{% url 'tickets:ticket_update_stage' ticket.id %}">
+                  {% csrf_token %}
+                  <select name="stage" class="form-control form-control-sm" style="width:auto" onchange="this.form.submit()">
+                    <option value="#" selected disabled>Выберите этап</option>
+                    {% for stage in stages %} 
+                      {% if stage.name != ticket.stage_history.last.stage.name and ticket.stage_history.last.stage.priority < stage.priority %} 
+                        <option value="{{ stage.id }}">
+                          {{ stage.name }}
+                        </option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                </form>
+              </div>
+            </div>
             {% else %}
-                Нет ответственного
+                Этап не назначен
+            {% endif %}
+          </td>
+          <td>
+            {% if ticket.stage_history.last.stage.priority == 0 %}
+              {{ ticket.created_by.person }}
+            {% else %}
+              {% get_all_employees as employees_list %}
+              {% for employee in employees_list%}
+                {% if employee.role == ticket.stage_history.last.stage.role %}
+                  {{employee.person}}
+                {% endif%}  
+              {% endfor %}
             {% endif %}
           </td>
           <td>

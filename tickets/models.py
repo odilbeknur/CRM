@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from users.models import Employee, Client, Person
+from users.models import Employee, Client, Person, Role
 
 
 
@@ -11,21 +11,29 @@ class Ticket(models.Model):
         ('in_progress', 'В работе'),
         ('completed', 'Завершена'),
     ]
-
+    ADS_CHOICES = [
+        ('friend', 'От знакомого'),
+        ('web', 'Сайт '),
+        ('instagram', 'Инстаграм'),
+        ('facebook', 'Фейсбук'),
+        ('flyers', 'Флаеры'),
+        ('banners', 'Наружная реклама'),
+        ('partners', 'Партнеры'),
+        ('client', 'Клиент'),
+    ]
     client = models.ForeignKey(
         Client, on_delete=models.CASCADE, related_name="tickets", verbose_name="Клиент"
     )
     description = models.TextField(null=True, blank=True, verbose_name="Описание")
+    ads_info = models.CharField(
+        max_length=50, choices=ADS_CHOICES, default='new', verbose_name="Источник рекламы"
+    )
     status = models.CharField(
         max_length=20, choices=STATUS_CHOICES, default='new', verbose_name="Статус заявки"
     )
     created_by = models.ForeignKey(
         Employee, on_delete=models.SET_NULL, null=True, related_name="created_tickets",
         verbose_name="Создатель заявки"
-    )
-    assigned_employee = models.ForeignKey(
-        Employee, on_delete=models.SET_NULL, null=True, related_name="assigned_tickets",
-        verbose_name="Назначенный сотрудник"
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
@@ -35,7 +43,7 @@ class Ticket(models.Model):
         verbose_name_plural = "Заявки"
         indexes = [
             models.Index(fields=["status"]),
-            models.Index(fields=["assigned_employee"]),
+            models.Index(fields=["created_by"]),
         ]
 
     def __str__(self):
@@ -46,6 +54,9 @@ class Ticket(models.Model):
 class Stage(models.Model):
     name = models.CharField(max_length=100, verbose_name="Название этапа")
     priority = models.PositiveIntegerField(verbose_name="Приоритет этапа", null=True, blank=True,)
+    role = models.ForeignKey(  # Add foreign key to the Role model
+        Role, on_delete=models.CASCADE, related_name="stages", verbose_name="Роль", null=True, blank=True,
+    )
 
     class Meta:
         verbose_name = "Этап"
@@ -80,6 +91,7 @@ class StageHistory(models.Model):
 
     def __str__(self):
         return f"Этап '{self.stage}' для заявки {self.ticket.id} (Начат: {self.started_at}, Завершен: {self.completed_at})"
+    
     # def save(self, *args, **kwargs):
     #     # Проверка начала этапа
     #     if not self.started_at:

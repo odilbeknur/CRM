@@ -9,7 +9,10 @@ def product_list(request):
     return render(
             request, 
             'products/product_list.html', 
-            {'products': products}
+            {
+                'products': products,
+                'section': 'products'
+            }
         )
 
 def product_create(request):
@@ -22,7 +25,10 @@ def product_create(request):
         form = ProductForm()
     return  render(request, 
                   'products/product_form.html', 
-                  {'form': form}
+                  {
+                    'form': form,
+                    'section': 'products'
+                }
             )
 
 def product_detail(request, pk):
@@ -30,7 +36,10 @@ def product_detail(request, pk):
     return render(
             request, 
             'products/product_detail.html', 
-            {'product': product}
+            {
+                'product': product,
+                'section': 'products'
+            }
         )
 
 def product_edit(request, pk):
@@ -44,10 +53,11 @@ def product_edit(request, pk):
         form = ProductForm(instance=product)
     return render(request, 
                   'products/product_edit.html', 
-                  {'form': form}
+                  {
+                      'form': form,
+                      'section': 'products'
+                    }
                 )
-
-
 
 def measurement_list(request):
     measurements = Measurement.objects.all()

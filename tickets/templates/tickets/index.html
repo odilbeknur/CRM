@@ -10,17 +10,6 @@
           <div class="mb-3">
             <button class="btn btn-primary me-4" type="button" data-bs-toggle="modal" data-bs-target="#addDealModal" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-plus me-2"></span>Добавить заявку</button><button class="btn btn-link text-body px-0"><span class="fa-solid fa-file-export fs-9 me-2"></span>Экспорт</button>
           </div>
-          <div class="d-flex mb-4">
-            <div class="search-box">
-              <form class="position-relative">
-                <input class="form-control search-input search" type="search" placeholder="Search by name" aria-label="Search" />
-                <span class="fas fa-search search-box-icon"></span>
-              </form>
-            </div>
-            <select class="form-select w-auto mx-2" id="select-deals">
-              <option>Deals</option>
-            </select><button class="btn px-3 btn-phoenix-secondary" type="button" data-bs-toggle="modal" data-bs-target="#reportsFilterModal" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fa-solid fa-filter text-primary" data-fa-transform="down-3"></span></button>
-          </div>
         </div>
       </div>
       <div class="px-4 px-lg-6 scrollbar">
@@ -52,32 +41,25 @@
                             <a class="dropdown-indicator-icon position-absolute text-body-tertiary" href="#collapseWidthDeals-{{ ticket.id }}" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseWidthDeals-1"><span class="fa-solid fa-angle-down"></span></a>
                             <div class="d-flex align-items-center justify-content-between mb-3">
                               <div class="d-flex">
-                                <span class="me-2" data-feather="clock" style="stroke-width:2;"></span>
+                                <span class="me-2" data-feather="calendar" style="stroke-width:2;"></span>
                                 <p class="mb-0 fs-9 fw-semibold text-body-tertiary date">
                                     <span class="text-body-quaternary">{{ ticket.created_at }}</span>
                                 </p>
                               </div>
                             </div>
                             <div class="deals-items-head d-flex align-items-center mb-2">
-                              <a class="text-primary fw-bold line-clamp-1 me-3 mb-0 fs-7" href="../../apps/crm/deal-details.html">{{ ticket.client }}</a>
-                              <p class="deals-category fs-10 mb-0 mt-1 d-none">
-                                <span class="me-1 text-body-quaternary" data-feather="grid" style="stroke-width:2; height: 12px; width: 12px"></span>Financial
-                              </p>
+                              <a class="text-primary fw-bold line-clamp-1 me-3 mb-0 fs-7" href="../../apps/crm/deal-details.html">{{ ticket.description }}</a>
                               <p class="ms-auto fs-9 text-body-emphasis fw-semibold mb-0 deals-revenue">4 000 000 сум</p>
                             </div>
                             <div class="deals-company-agent d-flex flex-between-center">
                               <div class="d-flex align-items-center">
                                 <span class="uil uil-user me-2"></span>
-                                <p class="text-body-secondary fw-bold fs-9 mb-0">Knitkake.inc</p>
-                              </div>
-                              <div class="d-flex align-items-center">
-                                <span class="uil uil-headphones me-2"></span>
-                                <p class="text-body-secondary fw-bold fs-9 mb-0">Ally Aagaard</p>
+                                <p class="text-body-secondary fw-bold fs-9 mb-0">{{ticket.client}}</p>
                               </div>
                             </div>
                             <div class="collapse" id="collapseWidthDeals-{{ ticket.id }}">
                               <div class="d-flex gap-2 mb-5">
-                                <span class="badge badge-phoenix badge-phoenix-success">Новая</span>
+                                <span class="badge badge-phoenix badge-phoenix-success">{{ticket.status}}</span>
                               </div>
                               <table class="mb-4 w-100 table-stats table-stats">
                                 <tr>
@@ -89,7 +71,7 @@
                                   <td class="py-1">
                                     <div class="d-flex align-items-center">
                                       <span class="me-2 text-body-tertiary" data-feather="dollar-sign"></span>
-                                      <p class="fw-semibold fs-9 mb-0 text-body-tertiary">Expected Revenue</p>
+                                      <p class="fw-semibold fs-9 mb-0 text-body-tertiary">Примерная стоимость</p>
                                     </div>
                                   </td>
                                   <td class="py-1 d-none d-sm-block pe-sm-2">:</td>
@@ -101,27 +83,27 @@
                                   <td class="py-1">
                                     <div class="d-flex align-items-center">
                                       <span class="me-2 text-body-tertiary" data-feather="user" style="width:16px; height:16px"></span>
-                                      <p class="fw-semibold fs-9 mb-0 text-body-tertiary">Company Name</p>
+                                      <p class="fw-semibold fs-9 mb-0 text-body-tertiary">Контакты</p>
                                     </div>
                                   </td>
                                   <td class="py-1 d-none d-sm-block pe-sm-2">:</td>
                                   <td class="py-1">
                                     <p class="ps-6 ps-sm-0 fw-semibold fs-9 mb-0 mb-0 pb-3 pb-sm-0 text-body-emphasis d-flex align-items-center gap-2">
-                                      Knitkake.inc<a href="#!"><span class="fa-solid fa-square-phone text-body-tertiary"></span></a><a href="#!"><span class="fa-solid fa-square-envelope text-body-tertiary"></span></a><a href="#!"><span class="fab fa-whatsapp-square text-body-tertiary"></span></a>
+                                      {{ ticket.client.person.phone_number_1 }}<a href="#!"><span class="fa-solid fa-square-phone text-body-tertiary"></span></a>
                                     </p>
                                   </td>
                                 </tr>
                                 <tr>
                                   <td class="py-1">
                                     <div class="d-flex align-items-center">
-                                      <span class="me-2 text-body-tertiary" data-feather="calendar" style="width:16px; height:16px"></span>
-                                      <p class="fw-semibold fs-9 mb-0 text-body-tertiary">Closing Date &amp; Time</p>
+                                      <span class="me-2 text-body-tertiary" data-feather="clock" style="width:16px; height:16px"></span>
+                                      <p class="fw-semibold fs-9 mb-0 text-body-tertiary">Дата обновления</p>
                                     </div>
                                   </td>
                                   <td class="py-1 d-none d-sm-block pe-sm-2">:</td>
                                   <td class="py-1">
                                     <p class="ps-6 ps-sm-0 fw-semibold fs-9 mb-0 mb-0 pb-3 pb-sm-0 text-body-emphasis">
-                                      27-12-2022<span>. 11:19 PM</span>
+                                      <span>{{ ticket.updated_at}}</span>
                                     </p>
                                   </td>
                                 </tr>

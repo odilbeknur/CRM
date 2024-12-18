@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .forms import (
     LoginForm,
@@ -34,11 +34,11 @@ def user_login(request):
 
 def list_clients(request):
     clients = Client.objects.all()  # Get all clients
-    return render(request, 'users/client_list.html', {'clients': clients})
+    return render(request, 'users/client_list.html', {'clients': clients, 'section': 'clients'})
 
 def list_employee(request):
     employees = Employee.objects.all()  # Get all clients
-    return render(request, 'users/employees_list.html', {'employees': employees})
+    return render(request, 'users/employees_list.html', {'employees': employees, 'section': 'employees'})
 
 def create_employee(request):
     if request.method == 'POST':
@@ -48,4 +48,4 @@ def create_employee(request):
             return redirect('employee_list')  # Redirect to an employee list or another page
     else:
         form = EmployeeForm()
-    return render(request, 'users/employee_form.html', {'form': form})
+    return render(request, 'users/employee_form.html', {'form': form , 'section': 'employees'})

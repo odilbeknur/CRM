@@ -11,9 +11,9 @@ class RoleAdmin(admin.ModelAdmin):
 # Registering Person model
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ['first_name', 'last_name', 'nickname', 'sex', 'phone_number_1', 'phone_number_2']
+    list_display = ['first_name', 'last_name', 'nickname', 'gender', 'phone_number_1', 'phone_number_2']
     search_fields = ['first_name', 'last_name', 'nickname']
-    list_filter = ['sex']
+    list_filter = ['gender']
 
 # Registering Employee model
 @admin.register(Employee)

@@ -26,7 +26,7 @@ class Role(models.Model):
 
 # Person Model
 class Person(models.Model):
-    SEX_CHOICES = [
+    GENDER_CHOICES = [
         ('male', 'Мужчина'),
         ('female', 'Женщина'),
     ]
@@ -34,8 +34,8 @@ class Person(models.Model):
     first_name = models.CharField(max_length=50, verbose_name="Имя", db_index=True)
     last_name = models.CharField(max_length=50, verbose_name="Фамилия", db_index=True)
     nickname = models.CharField(max_length=50, null=True, blank=True, verbose_name="Прозвище")
-    sex = models.CharField(
-        max_length=10, choices=SEX_CHOICES, null=True, blank=True, verbose_name="Пол"
+    gender = models.CharField(
+        max_length=10, choices=GENDER_CHOICES, null=True, blank=True, verbose_name="Пол"
     )
     phone_number_1 = models.CharField(max_length=20, unique=True, verbose_name="Телефон 1")
     phone_number_2 = models.CharField(max_length=20, null=True, blank=True, verbose_name="Телефон 2")
@@ -55,7 +55,6 @@ class Person(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 
-# Employee Model
 class Employee(models.Model):
     person = models.ForeignKey(
         Person, on_delete=models.CASCADE, related_name="employees", verbose_name="Личность"
@@ -79,9 +78,9 @@ class Employee(models.Model):
 
 class Client(models.Model):
     CLIENT_TYPE_CHOICES = [
-        ('g', 'Государственный'),
-        ('b', 'Бизнес'),
-        ('f', 'Физическое лицо'),
+        ('g', 'Г'),
+        ('b', 'ЮЛ'),
+        ('f', 'ФЛ'),
     ]
 
     person = models.ForeignKey(
@@ -92,9 +91,9 @@ class Client(models.Model):
     )
     fin_account = models.IntegerField(
         null=True, blank=True, verbose_name="Финансовый аккаунт"
-    )  # Теперь это поле необязательно
+    )  
 
-    class Meta:
+    class Meta: 
         verbose_name = "Клиент"
         verbose_name_plural = "Клиенты"
         indexes = [

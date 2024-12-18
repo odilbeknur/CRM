@@ -14,29 +14,51 @@ User = get_user_model()
 # Список заявок
 
 def index_view(request):
-    print(Ticket.objects.all())
+    if request.method == "POST":
+        form = TicketForm(request.POST)
+        if form.is_valid():
+            ticket = form.save(commit=False)
+            ticket.created_by = request.user.employee  # Assign the authenticated user's employee
+            
+            # Set default status as "Новая"
+            ticket.status = "Новая"
+            
+            ticket.save()
+
+            # Create StageHistory with default Stage 'Звонок'
+            stage, created = Stage.objects.get_or_create(name='Звонок')  # Получаем только Stage
+            StageHistory.objects.create(
+                ticket=ticket,
+                stage=stage,  # Используем только экземпляр Stage
+            )
+
+            return redirect(reverse_lazy('tickets:index_view'))  # Перенаправление после сохранения
+    else:
+        form = TicketForm()
 
     return render(
-            request, 
-            'tickets/index.html',
-            {
-                'stages': Stage.objects.all(),
-                'tickets': Ticket.objects.all()
-            }
+        request,
+        'tickets/index.html',
+        {
+            'form': form,  # Передача формы в шаблон
+            'stages': Stage.objects.all(),
+            'tickets': Ticket.objects.all(),
+            'section': 'index',
+        }
     )
 
-class TicketListView(ListView):
-    model = Ticket
-    template_name = 'tickets/ticket_list.html'
-    context_object_name = 'tickets'  # Имя контекста для шаблона
-    ordering = ['-created_at']  # Сортировка по дате создания
-    paginate_by = 10  # Количество элементов на страницу
+def ticket_list_view(request):
+    tickets = Ticket.objects.all().order_by('-created_at')
+    stages = Stage.objects.all()  # Получаем все стадии
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Получаем все стадии
-        context['stages'] = Stage.objects.all()  # Передаем все стадии в контекст
-        return context
+    context = {
+        'tickets': tickets,
+        'stages': stages,
+        'section': 'tickets',
+
+    }
+
+    return render(request, 'tickets/ticket_list.html', context)
 
 # Создание заявки
 @login_required
@@ -48,14 +70,12 @@ def ticket_create_view(request):
         form = TicketForm(request.POST)
         if form.is_valid():
             ticket = form.save(commit=False)
-            ticket.assigned_employee = request.user.employee  # Assign the authenticated user's employee
+            ticket.created_by = request.user.employee  
             
-            # Set default status as "Новая"
             ticket.status = "Новая"
             
             ticket.save()
 
-            # Create StageHistory with default Stage 'Звонок'
             stage, created = Stage.objects.get_or_create(name='Звонок')
             StageHistory.objects.create(
                 ticket=ticket,
@@ -66,7 +86,7 @@ def ticket_create_view(request):
     else:
         form = TicketForm()
 
-    return render(request, 'tickets/ticket_form.html', {'form': form})
+    return render(request, 'tickets/ticket_form.html', {'form': form, 'section': 'tickets'})
 
 
 @login_required
@@ -102,16 +122,53 @@ def ticket_update_stage(request, ticket_id):
         return redirect(reverse('tickets:ticket_list'))
     
     return redirect(reverse('tickets:ticket_list'))
+
+@login_required
+def ticket_update_stage_perform(request, ticket_id):
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+    if request.method == "POST":
+        new_stage_id = request.POST.get('stage')
+        new_stage = get_object_or_404(Stage, id=new_stage_id)
+        
+        # Create a new StageHistory entry
+        StageHistory.objects.create(
+            ticket=ticket,
+            stage=new_stage,
+        )
+        
+        return redirect(reverse('tickets:ticket_list'))
+    
+    return redirect(reverse('tickets:ticket_list'))
     
 # Редактирование заявки
-class TicketUpdateView(UpdateView):
-    model = Ticket
-    form_class = TicketForm
-    template_name = 'tickets/ticket_form.html'
-    success_url = reverse_lazy('tickets:ticket_list')  # после успешного редактирования перенаправление на список заявок
+def ticket_update_view(request, pk):
+    ticket = get_object_or_404(Ticket, pk=pk)  # Получаем объект заявки по pk
+    form = TicketForm(instance=ticket)
+
+    if request.method == 'POST':
+        form = TicketForm(request.POST, instance=ticket)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse_lazy('tickets:ticket_list'))
+
+    context = {
+        'form': form,
+        'ticket': ticket,
+        'section': 'tickets',
+    }
+    return render(request, 'tickets/ticket_form.html', context)
 
 # Удаление заявки
-class TicketDeleteView(DeleteView):
-    model = Ticket
-    template_name = 'tickets/ticket_confirm_delete.html'
-    success_url = reverse_lazy('tickets:ticket_list')
+def ticket_delete_view(request, pk):
+    ticket = get_object_or_404(Ticket, pk=pk)  # Получаем объект заявки по pk
+
+    if request.method == 'POST':
+        ticket.delete()
+        return redirect(reverse_lazy('tickets:ticket_list'))
+
+    context = {
+        'ticket': ticket,
+        'section': 'tickets',
+    }
+    return render(request, 'tickets/ticket_confirm_delete.html', context)
+

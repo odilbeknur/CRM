@@ -4,16 +4,16 @@ from .models import Ticket, Stage, StageHistory
 
 @admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
-    list_display = ("id", "client", "status", "created_by", "assigned_employee", "created_at", "updated_at")
+    list_display = ("id", "client", "status", "created_by", "ads_info","created_at", "updated_at")
     list_filter = ("status", "created_at", "updated_at")
     search_fields = ("id", "client__person__first_name", "client__person__last_name", "description")
-    autocomplete_fields = ("client", "created_by", "assigned_employee")
+    autocomplete_fields = ("client", "created_by")
     ordering = ("-created_at",)
 
 
 @admin.register(Stage)
 class StageAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "priority")
+    list_display = ("id", "name", "priority","role")
     search_fields = ("name", "priority")
 
 
