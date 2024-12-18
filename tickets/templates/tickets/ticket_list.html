@@ -11,15 +11,22 @@
         <h3 class="mb-0 text-primary position-relative fw-bold"><span class="bg-body pe-2">Список заявок</span><span class="border border-primary position-absolute top-50 translate-middle-y w-100 start-0 z-n1"></span></h3>
       </div>
     </div>
-  <a href="{% url 'tickets:ticket_create' %}" class="btn btn-success">Добавить заявку</a>
+  <div class="d-xl-flex justify-content-between">
+    <div class="mb-3">
+      <button class="btn btn-primary me-4" type="button" data-bs-toggle="modal" data-bs-target="#addDealModal" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-plus me-2"></span>Добавить заявку</button><button class="btn btn-link text-body px-0"></button>
+    </div>
+  </div>
   <table class="table">
     <thead>
       <tr>
         <th>ID</th>
+        <th>Дата поступления заявки </th>
         <th>Клиент</th>
+        <th>Номер телефона</th>
         <th>Описание</th>
-        <th>Дата</th>
+        <th>Адрес</th>
         <th>Источник рекламы</th>
+        <th>Статус</th>
         <th>Текущий этап</th>
         <th>Сотрудник</th>
         <th>Редактировать</th>
@@ -29,10 +36,13 @@
       {% for ticket in tickets %}
         <tr style="vertical-align: middle;">
           <td>{{ ticket.id }}</td>
-          <td>{{ ticket.client }}</td>
-          <td>{{ ticket.description }}</td>
           <td>{{ ticket.created_at }}</td>
-          <td>{{ ticket.ads_info }}</td>
+          <td>{{ ticket.client }}</td>
+          <td>{{ ticket.client.person.phone_number_1 }}</td>
+          <td>{{ ticket.description }}</td>
+          <td>{{ ticket.location}}</td>
+          <td>{{ ticket.get_ads_info_display }}</td>
+          <td>{{ ticket.status }}</td>
           <td>
             {% if ticket.stage_history.last %}
             <p>
@@ -85,6 +95,7 @@
   </table>
   </div>
   </div>
+  {% include 'modals/modals.html' %}
   <script>
     function updateStage() {
         var form = document.getElementById('stage-form');
@@ -101,5 +112,6 @@
               document.getElementById('stage-select').outerHTML = new DOMParser().parseFromString(html, 'text/html').querySelector('#stage-select').outerHTML;
           });
     }
-</script>
+  </script>
+
 {% endblock %}

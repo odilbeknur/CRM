@@ -1,12 +1,18 @@
 from django.db import models
 from django.utils import timezone
 from users.models import Employee, Client, Person, Role
+from datetime import timedelta
+from django.utils.timezone import now
 
+class TicketManager(models.Manager):
+    def update_old_tickets(self):
+        threshold_time = now() - timedelta(minutes=1)
+        print(self.filter(stage__name='Звонок', created_at__lte=threshold_time))
+        self.filter(stage__name='Звонок', created_at__lte=threshold_time).update(status='old')
 
-
-# Основная модель Заявки
 class Ticket(models.Model):
     STATUS_CHOICES = [
+        ('old', 'Устарела'),
         ('new', 'Новая'),
         ('in_progress', 'В работе'),
         ('completed', 'Завершена'),
@@ -17,14 +23,19 @@ class Ticket(models.Model):
         ('instagram', 'Инстаграм'),
         ('facebook', 'Фейсбук'),
         ('flyers', 'Флаеры'),
-        ('banners', 'Наружная реклама'),
+        ('banners', 'Наружная реклама'),    
         ('partners', 'Партнеры'),
         ('client', 'Клиент'),
     ]
     client = models.ForeignKey(
         Client, on_delete=models.CASCADE, related_name="tickets", verbose_name="Клиент"
     )
-    description = models.TextField(null=True, blank=True, verbose_name="Описание")
+    location = models.ForeignKey(
+        'locations.Location', on_delete=models.CASCADE, related_name="tickets", verbose_name="Локация", null=True, blank=True
+    )
+    description = models.TextField(
+        null=True, blank=True, verbose_name="Описание"
+    )
     ads_info = models.CharField(
         max_length=50, choices=ADS_CHOICES, default='new', verbose_name="Источник рекламы"
     )
@@ -32,11 +43,14 @@ class Ticket(models.Model):
         max_length=20, choices=STATUS_CHOICES, default='new', verbose_name="Статус заявки"
     )
     created_by = models.ForeignKey(
-        Employee, on_delete=models.SET_NULL, null=True, related_name="created_tickets",
-        verbose_name="Создатель заявки"
+        Employee, on_delete=models.SET_NULL, null=True, related_name="created_tickets", verbose_name="Создатель заявки"
     )
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name="Дата создания"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name="Дата обновления"
+    )
 
     class Meta:
         verbose_name = "Заявка"
@@ -48,6 +62,9 @@ class Ticket(models.Model):
 
     def __str__(self):
         return f"Заявка {self.id} для {self.client}"
+    
+    def get_ads_info_display(self):
+        return dict(self.ADS_CHOICES).get(self.ads_info, self.ads_info)
 
 
 # Этапы (справочник)

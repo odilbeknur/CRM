@@ -5,7 +5,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth import get_user_model, login
 from django.core.exceptions import ValidationError
 from .models import Ticket, Stage, StageHistory
-from .forms import TicketForm
+from .forms import TicketForm, TicketUpdateForm
 from django.http import HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 
@@ -48,14 +48,33 @@ def index_view(request):
     )
 
 def ticket_list_view(request):
-    tickets = Ticket.objects.all().order_by('-created_at')
-    stages = Stage.objects.all()  # Получаем все стадии
+    if request.method == "POST":
+        form = TicketForm(request.POST)
+        if form.is_valid():
+            ticket = form.save(commit=False)
+            ticket.created_by = request.user.employee  # Assign the authenticated user's employee
+            
+            # Set default status as "Новая"
+            ticket.status = "new"
+            
+            ticket.save()
+
+            # Create StageHistory with default Stage 'Звонок'
+            stage, created = Stage.objects.get_or_create(name='Звонок')  # Получаем только Stage
+            StageHistory.objects.create(
+                ticket=ticket,
+                stage=stage,  # Используем только экземпляр Stage
+            )
+
+            return redirect(reverse_lazy('tickets:ticket_list'))  # Перенаправление после сохранения
+    else:
+        form = TicketForm()
 
     context = {
-        'tickets': tickets,
-        'stages': stages,
         'section': 'tickets',
-
+        'tickets': Ticket.objects.all().order_by('-created_at'),
+        'stages': Stage.objects.all() ,
+        'form': form,
     }
 
     return render(request, 'tickets/ticket_list.html', context)
@@ -142,11 +161,11 @@ def ticket_update_stage_perform(request, ticket_id):
     
 # Редактирование заявки
 def ticket_update_view(request, pk):
-    ticket = get_object_or_404(Ticket, pk=pk)  # Получаем объект заявки по pk
-    form = TicketForm(instance=ticket)
+    ticket = get_object_or_404(Ticket, pk=pk) 
+    form = TicketUpdateForm(instance=ticket)
 
     if request.method == 'POST':
-        form = TicketForm(request.POST, instance=ticket)
+        form = TicketUpdateForm(request.POST, instance=ticket)
         if form.is_valid():
             form.save()
             return redirect(reverse_lazy('tickets:ticket_list'))

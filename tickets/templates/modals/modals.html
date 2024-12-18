@@ -45,7 +45,7 @@
         <div class="modal-content bg-body-highlight p-6">
             <!-- Modal Header -->
             <div class="modal-header justify-content-between border-0 p-0 mb-2">
-                <h3 class="mb-0" id="addDealModalLabel">{% if ticket %}Edit Deal{% else %}Create Deal{% endif %}</h3>
+                <h3 class="mb-0" id="addDealModalLabel">{% if ticket %}Edit Deal{% else %}Создать заявку{% endif %}</h3>
                 <button class="btn btn-sm btn-phoenix-secondary" data-bs-dismiss="modal" aria-label="Close">
                     <span class="fas fa-times text-danger"></span>
                 </button>
@@ -53,7 +53,7 @@
             
             <!-- Modal Body -->
             <div class="modal-body px-0">
-                <form method="post" action="{% url 'tickets:index_view' %}">
+                <form method="post" action="{% url 'tickets:ticket_list' %}">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <div class="d-flex justify-content-end mt-3">
