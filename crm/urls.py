@@ -24,6 +24,7 @@ urlpatterns = [
     path('tickets/', include('tickets.urls', namespace='tickets')),
     path('products/', include('products.urls', namespace='products')),
     path('users/', include('users.urls', namespace='users')),
+    path('finance/', include('finance.urls', namespace='finance')),
 ]
 
 if settings.DEBUG:

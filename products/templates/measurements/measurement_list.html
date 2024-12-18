@@ -1,30 +1,42 @@
 {% extends "base.html" %}
 
-{% block content %}
-  <h2>Список замеров</h2>
-  <a href="{% url 'products:measurement_create' %}" class="btn btn-success">Добавить замер</a>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Заявка</th>
-        <th>Продукция</th>
-        <th>Размеры</th>
-        <th>Действия</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for measurement in measurements %}
+{% block main %}
+<div class="content">
+  <div class="mb-9" data-bs-spy="scroll" data-bs-target="#widgets-scrollspy">
+    <div class="d-flex mb-5 pt-8" id="scrollspyStats"><span class="fa-stack me-2 ms-n1"><i
+          class="fas fa-circle fa-stack-2x text-primary"></i><i
+          class="fa-inverse fa-stack-1x text-primary-subtle"></i></span>
+      <div class="col">
+        <h3 class="mb-0 text-primary position-relative fw-bold"><span class="bg-body pe-2">Замеры</span><span
+            class="border border-primary position-absolute top-50 translate-middle-y w-100 start-0 z-n1"></span></h3>
+      </div>
+    </div>
+    <a href="{% url 'products:measurement_create' %}" class="btn btn-success">Добавить замер</a>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Заявка</th>
+          <th>Продукция</th>
+          <th>Размеры</th>
+          <!-- <th>Действия</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for measurement in measurements %}
         <tr>
           <td>{{ measurement.id }}</td>
           <td>{{ measurement.ticket }}</td>
           <td>{{ measurement.product }}</td>
           <td>{{ measurement.height }} x {{ measurement.width }}</td>
-          <td>
-            <a href="{% url 'measurement_edit' measurement.id %}" class="btn btn-primary btn-sm">Редактировать</a>
-          </td>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+        {% empty %}
+        <tr>
+          <td colspan="7" class="text-center">Замеров пока нет.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock %}

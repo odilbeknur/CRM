@@ -1,11 +1,19 @@
 {% extends "base.html" %}
 
-{% block content %}
-  <h2>{% if measurement %}Редактирование замера{% else %}Создание замера{% endif %}</h2>
+{% block main %}
+<div class="content">
+  <div class="mb-9" data-bs-spy="scroll" data-bs-target="#widgets-scrollspy">
+    <div class="d-flex mb-5 pt-8" id="scrollspyStats"><span class="fa-stack me-2 ms-n1"><i class="fas fa-circle fa-stack-2x text-primary"></i><i class="fa-inverse fa-stack-1x text-primary-subtle"></i></span>
+      <div class="col">
+        <h3 class="mb-0 text-primary position-relative fw-bold"><span class="bg-body pe-2">Создать замер</span><span class="border border-primary position-absolute top-50 translate-middle-y w-100 start-0 z-n1"></span></h3>
+      </div>
+    </div>
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">{% if measurement %}Сохранить изменения{% else %}Создать замер{% endif %}</button>
+    <button type="submit" class="btn btn-primary">{% if measurement %}Сохранить изменения{% else %}Создать{% endif %}</button>
   </form>
   <a href="{% url 'products:measurement_list' %}" class="btn btn-secondary">Отмена</a>
+</div>
+</div>
 {% endblock %}

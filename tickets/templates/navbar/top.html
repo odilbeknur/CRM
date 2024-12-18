@@ -18,21 +18,27 @@
     <div class="collapse navbar-collapse navbar-top-collapse order-1 order-lg-0 justify-content-center"
         id="navbarTopCollapse">
         <ul class="navbar-nav navbar-nav-top" data-dropdown-on-hover="data-dropdown-on-hover">
-            <li class="nav-item dropdown"><a class="nav-link lh-1" {% if section == 'tickets' %} style="background-color: #a9cce9;"{%endif%} href="{% url 'tickets:ticket_list' %}" role="button">
+            <li class="nav-item dropdown"><a class="nav-link lh-1" {% if section == 'tickets' %} style="background-color: #deffda;"{%endif%} href="{% url 'tickets:ticket_list' %}" role="button">
                 <span class="uil fs-8 me-2 uil-chart-pie"></span>Заявки</a>
             </li>
                 
-            <li class="nav-item dropdown"><a class="nav-link lh-1"{% if section == 'index' %} style="background-color: #a9cce9;"{%endif%}  href="{% url 'tickets:index_view' %}" role="button">
-                <span class="uil fs-8 me-2 uil-chart-pie"></span>Статус заявок</a>
+            <li class="nav-item dropdown"><a class="nav-link lh-1"{% if section == 'index' %} style="background-color: #deffda;"{%endif%}  href="{% url 'tickets:index_view' %}" role="button">
+                <span class="uil fs-8 me-2 uil-clock"></span>Статус заявок</a>
             </li>
-            <li class="nav-item dropdown"><a class="nav-link lh-1" {% if section == 'products' %} style="background-color: #a9cce9;"{%endif%} href="{% url 'products:list' %}" role="button">
-                <span class="uil fs-8 me-2 uil-cube"></span>Продукция</a>
+            <li class="nav-item dropdown"><a class="nav-link lh-1" {% if section == 'products' %} style="background-color: #deffda;"{%endif%} href="{% url 'products:list' %}" role="button">
+                <span class="uil fs-8 me-2 uil-box"></span>Продукция</a>
             </li>
-            <li class="nav-item dropdown"><a class="nav-link lh-1" {% if section == 'clients' %} style="background-color: #a9cce9;"{%endif%} href="{% url 'users:client_list' %}" role="button">
-                <span class="uil fs-8 me-2 uil-files-landscapes-alt"></span>Клиенты</a>
+            <li class="nav-item dropdown"><a class="nav-link lh-1" {% if section == 'measurements' %} style="background-color: #deffda;"{%endif%} href="{% url 'products:measurement_list' %}" role="button">
+                <span class="uil fs-8 me-2 uil-ruler-combined"></span>Замеры</a>
             </li>
-            <li class="nav-item dropdown"><a class="nav-link lh-1" {% if section == 'employees' %} style="background-color: #a9cce9;"{%endif%}  href="{% url 'users:list_employee' %}" role="button">
-                <span class="uil fs-8 me-2 uil-puzzle-piece"></span>Сотрудники</a>
+            <li class="nav-item dropdown"><a class="nav-link lh-1" {% if section == 'clients' %} style="background-color: #deffda;"{%endif%} href="{% url 'users:client_list' %}" role="button">
+                <span class="uil fs-8 me-2 uil-users-alt"></span>Клиенты</a>
+            </li>
+            <li class="nav-item dropdown"><a class="nav-link lh-1" {% if section == 'employees' %} style="background-color: #deffda;"{%endif%}  href="{% url 'users:list_employee' %}" role="button">
+                <span class="uil fs-8 me-2 uil-user-square"></span>Сотрудники</a>
+            </li>
+            <li class="nav-item dropdown"><a class="nav-link lh-1" {% if section == 'finance' %} style="background-color: #deffda;"{%endif%}  href="{% url 'finance:finance_list' %}" role="button">
+                <span class="uil fs-8 me-2 uil-receipt-alt"></span>Финансы</a>
             </li>
         </ul>
     </div>

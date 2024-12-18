@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'tickets.apps.TicketsConfig',
     'products.apps.ProductsConfig',
     'locations.apps.LocationsConfig',
+    'finance.apps.FinanceConfig',
+
 ]
 
 MIDDLEWARE = [

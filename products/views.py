@@ -64,7 +64,10 @@ def measurement_list(request):
     return render(
             request, 
             'measurements/measurement_list.html', 
-            {'measurements': measurements}
+            {
+                'measurements': measurements,
+                'section': 'measurements'
+            }
         )
     
 def measurement_create(request):
@@ -79,7 +82,10 @@ def measurement_create(request):
     return render(
         request, 
         'measurements/measurement_form.html', 
-        {'form': form}
+        {
+            'form': form,
+            'section': 'measurements'
+        }
     )
 
 def measurement_edit(request, pk):
