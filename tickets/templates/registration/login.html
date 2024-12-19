@@ -1,0 +1,10 @@
+{% extends "login_base.html" %}
+{% block title %}Авторизация{% endblock %}
+{% block main %}
+<h1>Войти</h1>
+<form method="post">
+    {{ form.as_p }}
+    {% csrf_token %}    
+    <button type="submit" class="btn btn-success">Войти</button>
+</form>
+{% endblock %}

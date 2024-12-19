@@ -8,10 +8,10 @@
         <h3 class="mb-0 text-primary position-relative fw-bold"><span class="bg-body pe-2">Подтвердите удаление заявки</span><span class="border border-primary position-absolute top-50 translate-middle-y w-100 start-0 z-n1"></span></h3>
       </div>
     </div>
-  <p>Вы уверены, что хотите удалить заявку <strong>{{ object.id }}</strong> для клиента "{{ object.client }}"?</p>
+  <p>Вы уверены, что хотите удалить заявку <strong>{{ ticket.id }}</strong> для клиента "{{ ticket.client }}"?</p>
   <form method="post">
     {% csrf_token %}
-    {% if object %}
+    {% if ticket %}
       <button type="submit" class="btn btn-danger">Удалить</button>
       <a href="{% url 'tickets:ticket_list' %}" class="btn btn-secondary">Отмена</a>
     {% endif %}

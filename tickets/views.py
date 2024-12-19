@@ -2,12 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.contrib.auth import get_user_model, login
+from django.contrib.auth import get_user_model, login, authenticate
 from django.core.exceptions import ValidationError
 from .models import Ticket, Stage, StageHistory
-from .forms import TicketForm, TicketUpdateForm
-from django.http import HttpResponseBadRequest
+from .forms import TicketForm, TicketUpdateForm, LoginForm
+from django.http import HttpResponseBadRequest, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator
 
 User = get_user_model()
 
@@ -47,6 +48,7 @@ def index_view(request):
         }
     )
 
+@login_required
 def ticket_list_view(request):
     if request.method == "POST":
         form = TicketForm(request.POST)
@@ -70,10 +72,16 @@ def ticket_list_view(request):
     else:
         form = TicketForm()
 
+    # Fetch tickets and apply pagination
+    ticket_queryset = Ticket.objects.all().order_by('-created_at')
+    paginator = Paginator(ticket_queryset, 10)  # Show 10 tickets per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
         'section': 'tickets',
-        'tickets': Ticket.objects.all().order_by('-created_at'),
-        'stages': Stage.objects.all() ,
+        'tickets': page_obj,  # Pass paginated tickets
+        'stages': Stage.objects.all(),
         'form': form,
     }
 
@@ -191,3 +199,27 @@ def ticket_delete_view(request, pk):
     }
     return render(request, 'tickets/ticket_confirm_delete.html', context)
 
+
+def user_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(
+                request,
+                username=cd['username'],
+                password=cd['password']
+            )
+
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return HttpResponse('Authenticated successfully')
+                else:
+                    return HttpResponse('Disabled account')
+            else:
+                return HttpResponse('Invalid login')
+    else: 
+        form = LoginForm()
+    
+    return render(request, 'account/login.html', {'form': form})

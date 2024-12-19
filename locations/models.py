@@ -1,8 +1,25 @@
 from django.db import models
 
 class Location(models.Model):
-    city = models.CharField(max_length=100, verbose_name="Город")
-    district = models.CharField(max_length=100, verbose_name="Район", blank=True, null=True)
+    CITY_CHOICES = [
+        ('Tashkent', 'Ташкент'),
+    ]
+
+    DISTRICT_CHOICES = [
+        ('almazar', 'Алмазарский район'),
+        ('bektemir', 'Бектемирский район'),
+        ('mirobod', 'Мирабадский район'),
+        ('mirzo_ulugbek', 'Мирзо Улугбекский район'),
+        ('sergeli', 'Сергелийский район'),
+        ('chilhonzor', 'Чиланзарский район'),
+        ('shaikhontohur', 'Шайхонтаурский район'),
+        ('yunusabad', 'Юнусабадский район'),
+        ('yakkasaroy', 'Яккасарайский район'),
+        ('yashnobod', 'Яшнабадский район'),
+        ('uchtepa', 'Учтепинский район'),
+    ]
+    city = models.CharField(max_length=100, choices=CITY_CHOICES, verbose_name="Город")
+    district = models.CharField(max_length=100, choices=DISTRICT_CHOICES, verbose_name="Район", blank=True, null=True)
     street = models.CharField(max_length=100, verbose_name="Улица", blank=True, null=True)
     apartment = models.CharField(max_length=50, verbose_name="Квартира", blank=True, null=True)
     entrance = models.CharField(max_length=50, verbose_name="Подъезд", blank=True, null=True)

@@ -76,7 +76,7 @@ def measurement_create(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Замер успешно создан.')
-            return redirect('measurement_list') 
+            return redirect('products:measurement_list') 
     else:
         form = MeasurementForm()
     return render(
@@ -95,7 +95,7 @@ def measurement_edit(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Замер успешно обновлен.')
-            return redirect('measurement_list') 
+            return redirect('products:measurement_list') 
     else:
         form = MeasurementForm(instance=measurement)
     return render(

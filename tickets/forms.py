@@ -3,6 +3,12 @@ from django.core.exceptions import ValidationError
 from .models import Ticket, Person, Client
 from locations.models import Location
 
+
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
+
 class TicketForm(forms.ModelForm):
     client_first_name = forms.CharField(
         max_length=50,

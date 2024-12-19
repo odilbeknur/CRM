@@ -45,7 +45,7 @@ def create_employee(request):
         form = EmployeeForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('employee_list')  # Redirect to an employee list or another page
+            return redirect('users:list_employee')  # Redirect to an employee list or another page
     else:
         form = EmployeeForm()
     return render(request, 'users/employee_form.html', {'form': form , 'section': 'employees'})

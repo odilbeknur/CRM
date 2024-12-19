@@ -29,10 +29,17 @@
           <td>{{ measurement.ticket }}</td>
           <td>{{ measurement.product }}</td>
           <td>{{ measurement.height }} x {{ measurement.width }}</td>
+          <td>
+            {% if measurement.photo %}
+              <img src="{{ measurement.photo.url }}" alt="Measurement Image" style="width: 100px; height: auto;">
+            {% else %}
+              Нет фото
+            {% endif %}
+          </td>
         </tr>
         {% empty %}
         <tr>
-          <td colspan="7" class="text-center">Замеров пока нет.</td>
+          <td colspan="5">No measurements found.</td>
         </tr>
         {% endfor %}
       </tbody>

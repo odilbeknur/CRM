@@ -7,7 +7,7 @@ def create_finance(request):
         form = FinanceForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('finance_success')  
+            return redirect('finance:finance_list')  
     else:
         form = FinanceForm()
     return render(request, 'finance/finance_form.html', {'form': form, 'section':'finance'})
